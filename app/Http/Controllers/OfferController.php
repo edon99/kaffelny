@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OfferStateEnum;
+use App\Enums\ServiceEnum;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,12 +20,10 @@ class OfferController extends Controller{
         ];
     }
 
-
-
     public function index()
     {
-        $offers = Offer::all();
-        return Inertia::render('Offers', [ 'offers' => $offers,]);
+        $offers = Offer::with('user')->with('provider')->get();
+        return Inertia::render('Offers', [ 'offers' => $offers]);
     }
 
 

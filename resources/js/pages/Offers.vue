@@ -12,9 +12,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { providerColumns } from '@/tables/providerColumns';
 
 
+
 const props = defineProps<{
     offers: Offer[]
 }>();
+
+console.log(props.offers);
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -42,7 +45,7 @@ const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCor
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">
-                                {{ offers.filter(offer => offer.state === 'pending').length }}
+                                {{ offers.filter(offer => offer.state === 1).length }}
                             </div>
                             <p className="text-xs text-muted-foreground">Pending offers are offers that are waiting for
                                 a provider to accept or see them</p>
@@ -57,7 +60,7 @@ const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCor
                         </CardHeader>
                         <CardContent>
                             <div className="text-2xl font-bold">
-                                {{ offers.filter(offer => offer.state === 'accepted').length }}
+                                {{ offers.filter(offer => offer.state === 3).length }}
                             </div>
                             <p className="text-xs text-muted-foreground">Confirmed offers are offers that have been
                                 accepted by a provider</p>

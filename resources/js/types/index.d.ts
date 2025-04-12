@@ -61,14 +61,16 @@ export interface Provider {
 
 export interface Offer {
     id: number;
-    state: string;
-    service: string;
+    state: int;
+    service: int;
     hours: number;
     description?: string;
     long?: string;
     lat?: string;
     user_id?: number | null;
+    user?: User;
     provider_id?: number | null;
+    provider?: Provider;
     created_at: string;
 }
 

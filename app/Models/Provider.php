@@ -38,6 +38,6 @@ class Provider extends Model
 
     public function offers()
     {
-        $this->hasMany(Offer::class);
+        return $this->hasMany(Offer::class);
     }
 }

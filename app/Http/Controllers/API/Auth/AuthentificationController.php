@@ -60,6 +60,7 @@ class AuthentificationController extends Controller
 
     public function user(Request $request){
         return response()->json([
+            'id' => $request->user()->id,
             'name' => $request->user()->name,
             'email' => $request->user()->email,
 //            'token' => $request->bearerToken(),

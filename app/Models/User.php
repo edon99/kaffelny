@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function offers()
     {
-        $this->hasMany(Offer::class);
+        return $this->hasMany(Offer::class);
     }
 }

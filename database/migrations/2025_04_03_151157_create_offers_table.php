@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->enum('service', ServiceEnum::values());
-            $table->integer('hours');
+            $table->integer('hours')->nullable();
             $table->text('description')->nullable();
             $table->decimal('long', 10, 7)->nullable();
             $table->decimal('lat', 10, 7)->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('provider_id')->nullable()->constrained()->onDelete('cascade');
-            $table->enum('state', OfferStateEnum::values())->default('pending');
+            $table->enum('state', OfferStateEnum::values())->default(1);
             $table->timestamps();
         });
     }

@@ -48,7 +48,9 @@ const latlng = ref([props.lat, props.long])
             </div>
 
             <DialogFooter>
+                <DialogTrigger>
                 <Button @click="$emit('close')">Close</Button>
+                </DialogTrigger>
             </DialogFooter>
         </DialogContent>
     </Dialog>

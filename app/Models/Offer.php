@@ -28,15 +28,15 @@ class Offer extends Model
         'state' => OfferStateEnum::class,
         'created_at' => 'datetime:d-m-Y H:i:s',
     ];
-
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
+
 
     public function provider()
     {
-        $this->belongsTo(Provider::class);
+        return $this->belongsTo(Provider::class);
     }
 
 }

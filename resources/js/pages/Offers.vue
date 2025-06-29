@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ref } from 'vue';
-import { FlexRender, getCoreRowModel, useVueTable } from '@tanstack/vue-table';
+import { FlexRender, getCoreRowModel, getPaginationRowModel, useVueTable } from '@tanstack/vue-table';
 import { userColumns } from '@/tables/userColumns';
 import { offerColumns } from '@/tables/offerColumns';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -26,8 +26,22 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
+
+
 const data = ref<Offer[]>(props.offers);
-const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCoreRowModel() });
+const table = useVueTable({
+    columns: offerColumns,
+    columnResizeMode: 'onChange',
+    enableColumnResizing: true,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+        pagination: {
+            pageSize: 5,
+        },
+    },
+});
 
 </script>
 
@@ -93,6 +107,7 @@ const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCor
                                 v-for="header in headerGroup.headers"
                                 :key="header.id"
                                 :colspan="header.colSpan"
+                                :style="{ width: header.getSize() + 'px' }"
                                 class="px-4 py-3 text-left font-medium text-muted-foreground text-xs uppercase border-b"
                             >
                                 <template v-if="!header.isPlaceholder">
@@ -109,11 +124,13 @@ const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCor
                         <TableRow
                             v-for="row in table.getRowModel().rows"
                             :key="row.id"
+
                             class="hover:bg-muted/30 transition-colors"
                         >
                             <TableCell
                                 v-for="cell in row.getVisibleCells()"
                                 :key="cell.id"
+                                :style="{ width: cell.column.getSize() + 'px' }"
                                 class="px-4 py-3 border-b"
                             >
                                 <FlexRender
@@ -133,6 +150,42 @@ const table = useVueTable({ columns: offerColumns, data, getCoreRowModel: getCor
                         </TableRow>
                     </TableBody>
                 </Table>
+                <div class="flex justify-between items-center mt-4">
+                    <!-- Left: Page Navigation -->
+                    <div class="flex items-center gap-2">
+                        <button
+                            @click="table.previousPage"
+                            :disabled="!table.getCanPreviousPage()"
+                            class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground shadow transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                        >
+                            Précédent
+                        </button>
+                        <button
+                            @click="table.nextPage"
+                            :disabled="!table.getCanNextPage()"
+                            class="inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-3 text-sm font-medium text-foreground shadow transition-colors hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+                        >
+                            Suivant
+                        </button>
+                    </div>
+
+                    <!-- Right: Page Info + Page Size -->
+                    <div class="flex items-center gap-4">
+      <span class="text-sm text-muted-foreground">
+        Page {{ table.getState().pagination.pageIndex + 1 }}
+        sur {{ table.getPageCount() }}
+      </span>
+
+                        <select
+                            v-model.number="table.getState().pagination.pageSize"
+                            class="h-9 rounded-md border border-input bg-background px-2 text-sm text-foreground shadow-sm"
+                        >
+                            <option :value="5">5 lignes</option>
+                            <option :value="10">10 lignes</option>
+                            <option :value="20">20 lignes</option>
+                        </select>
+                    </div>
+                </div>
 
 
             </div>

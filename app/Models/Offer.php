@@ -24,9 +24,9 @@ class Offer extends Model
     ];
 
     protected $casts = [
+        'created_at' => 'datetime:d-m-Y H:i:s',
         'service' => ServiceEnum::class,
         'state' => OfferStateEnum::class,
-        'created_at' => 'datetime:d-m-Y H:i:s',
     ];
     public function user()
     {
@@ -37,6 +37,11 @@ class Offer extends Model
     public function provider()
     {
         return $this->belongsTo(Provider::class);
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('state', OfferStateEnum::PENDING);
     }
 
 }

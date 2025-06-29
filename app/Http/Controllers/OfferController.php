@@ -22,7 +22,7 @@ class OfferController extends Controller{
 
     public function index()
     {
-        $offers = Offer::with('user')->with('provider')->get();
+        $offers = Offer::with('user')->with('provider')->orderBy('created_at')->get();
         return Inertia::render('Offers', [ 'offers' => $offers]);
     }
 
